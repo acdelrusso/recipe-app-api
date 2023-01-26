@@ -9,14 +9,16 @@ WORKDIR /app
 EXPOSE 8000
 ARG DEV=false
 
+ENV HTTP_PROXY="http://webproxy.merck.com:8080"
+ENV HTTPS_PROXY="http://webproxy.merck.com:8080"
+ENV NO_PROXY="localhost,127.0.0.1,.merck.com,github.com"
 
-RUN if [ ${DEV} = 'true']; \
-    then export HTTP_PROXY="http://webproxy.merck.com:8080" TTPS_PROXY="http://webproxy.merck.com:8080" ; \
-    fi && \
-    python -m venv /py && \
+
+RUN python -m venv /py && \
     /py/bin/pip install --upgrade pip && \
     /py/bin/pip install -r /tmp/requirements.txt && \
-    if [ ${DEV} = "true"]; \
+    echo $DEV && \
+    if [ $DEV = "true"]; \
     then /py/bin/pip install -r /tmp/requirements.dev.txt ; \
     fi && \
     rm -rf /tmp && \
