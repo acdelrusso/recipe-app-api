@@ -8,13 +8,10 @@ COPY ./app /app
 WORKDIR /app
 EXPOSE 8000
 ARG DEV=false
-ENV HTTP_PROXY="http://webproxy.merck.com:8080"
-ENV HTTPS_PROXY="http://webproxy.merck.com:8080"
 
 
 RUN if [ ${DEV} = 'true']; \
-    then set HTTP_PROXY="http://webproxy.merck.com:8080" && \
-    set HTTPS_PROXY="http://webproxy.merck.com:8080" ; \
+    then export HTTP_PROXY="http://webproxy.merck.com:8080" TTPS_PROXY="http://webproxy.merck.com:8080" ; \
     fi && \
     python -m venv /py && \
     /py/bin/pip install --upgrade pip && \
