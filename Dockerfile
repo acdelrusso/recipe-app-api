@@ -9,11 +9,6 @@ WORKDIR /app
 EXPOSE 8000
 ARG DEV=false
 
-# ENV HTTP_PROXY="http://webproxy.merck.com:8080"
-ENV HTTPS_PROXY="http://webproxy.merck.com:8080"
-ENV NO_PROXY="localhost,127.0.0.1,.merck.com,github.com"
-
-
 RUN python -m venv /py && \
     /py/bin/pip install --upgrade pip && \
     /py/bin/pip install -r /tmp/requirements.txt && \
