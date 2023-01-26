@@ -7,12 +7,16 @@ COPY ./requirements.dev.txt /tmp/requirements.dev.txt
 COPY ./app /app
 WORKDIR /app
 EXPOSE 8000
-
+ARG DEV=false
 ENV HTTP_PROXY="http://webproxy.merck.com:8080"
 ENV HTTPS_PROXY="http://webproxy.merck.com:8080"
 
-ARG DEV=false
-RUN python -m venv /py && \
+
+RUN if [ ${DEV} = 'true']; \
+    then set HTTP_PROXY="http://webproxy.merck.com:8080" && \
+    set HTTPS_PROXY="http://webproxy.merck.com:8080" ; \
+    fi && \
+    python -m venv /py && \
     /py/bin/pip install --upgrade pip && \
     /py/bin/pip install -r /tmp/requirements.txt && \
     if [ ${DEV} = "true"]; \
